@@ -1,0 +1,1 @@
+// These are the routes for the homeowner type user

@@ -21,6 +21,7 @@ const apprenticeSchema = new mongoose.Schema({
         });
         return count === 0;
       },
+      message: "Email already exists in the database",
     },
   },
   phoneNumber: {
@@ -37,6 +38,7 @@ const apprenticeSchema = new mongoose.Schema({
         });
         return count === 0;
       },
+      message: "Phone number already exists in the database",
     },
   },
   address: {
@@ -62,6 +64,15 @@ const apprenticeSchema = new mongoose.Schema({
   yearOfGraduation: {
     type: String,
     required: [true, "Year of graduation is required"],
+    validation: {
+      validator: async function (yearOfGraduation) {
+        const inputYear = parseInt(yearOfGraduation, 10);
+        const currentYear = new Date().getFullYear();
+
+        return inputYear >= currentYear;
+      },
+      message: props => `${props.value} is not a valid year of graduation. It should be greater than or equal to ${new Date().getFullYear()}`
+    }
   },
 });
 

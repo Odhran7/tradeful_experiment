@@ -19,6 +19,7 @@ const tradespersonSchema = new mongoose.Schema({
                 const count = await this.model("Tradesperson").countDocuments;
                 return count === 0;
             },
+            message: "Email already exists in the database",
         },
     },
     phoneNumber: {
