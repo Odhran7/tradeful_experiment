@@ -1,13 +1,8 @@
-// This is the config for the logger files
-
 import winston from 'winston';
-import process from 'process';
-import { ensureDirectoryExists, getProjectRoot } from '../utils/fileSystemUtils.js';
-import path from 'path';
+import S3Transport from './s3Transport.js';
 
-const projectRoot = getProjectRoot();
-const logsPath = path.join(projectRoot, 'logs');
-ensureDirectoryExists(logsPath);
+const bucketName = 'cyclic-gifted-worm-umbrella-ap-southeast-2';
+const logFileName = 'logs/my_application_log.log';
 
 const logger = winston.createLogger({
   level: 'info',
@@ -19,20 +14,12 @@ const logger = winston.createLogger({
     winston.format.splat(),
     winston.format.json()
   ),
-  defaultMeta: { service: 'user-service' },
   transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
+    new S3Transport({
+      bucketName: bucketName,
+      logFileName: logFileName
+    })
   ]
 });
-
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple()
-    )
-  }));
-}
 
 export default logger;
