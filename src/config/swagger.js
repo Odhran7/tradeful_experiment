@@ -20,6 +20,10 @@ const swaggerOptions = {
           url: 'http://localhost:5000',
           description: 'Development server',
         },
+        {
+          url: 'https://gifted-worm-umbrella.cyclic.app/api-docs/',
+          description: 'Production server',
+        }
       ],
     },
     apis: ['./src/routes/**/*.js'],
