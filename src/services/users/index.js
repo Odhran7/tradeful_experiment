@@ -1,14 +1,13 @@
 // This is the export file for the users service 
 
-import ApprenticeService from "./apprentice/apprenticeService";
-import HomeownerServices from "./homeowner/homeownerService";
-import TradespersonService from "./tradesperson/tradespersonService";
+import ApprenticeService from "./apprentice/apprenticeService.js";
+import HomeownerService from "./homeowner/homeownerService.js";
+import TradespersonService from "./tradesperson/tradespersonService.js";
 import models from "../../models/index.js";
 
-const { Apprentice, Homeowner, Tradesperson } = models;
-
-const apprenticeService = new ApprenticeService(Apprentice);
-const homeownerService = new HomeownerServices(Homeowner);
-const tradespersonService = new TradespersonService(Tradesperson);
+const { apprentice, homeowner, tradesperson } = models;
+const tradespersonService = new TradespersonService(tradesperson);
+const homeownerService = new HomeownerService(homeowner);
+const apprenticeService = new ApprenticeService(apprentice);
 
 export { apprenticeService, homeownerService, tradespersonService };

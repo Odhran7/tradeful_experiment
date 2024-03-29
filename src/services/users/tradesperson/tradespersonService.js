@@ -4,7 +4,7 @@ import BaseUserService from "../base/baseUserService.js";
 
 class TradespersonService extends BaseUserService {
     constructor(model) {
-        this.model = model;
+        super(model);
     }
 
     // Get tradesperson by trade

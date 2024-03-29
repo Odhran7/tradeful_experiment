@@ -16,7 +16,9 @@ const homeownerSchema = new mongoose.Schema({
     ],
     validation: {
       validator: async function (emailAddress) {
-        const count = await this.model("Homeowner").countDocuments;
+        const count = await this.model("Homeowner").countDocuments({
+          emailAddress,
+        });
         return count === 0;
       },
       message: "Email already exists in the database",

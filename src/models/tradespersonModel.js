@@ -16,7 +16,9 @@ const tradespersonSchema = new mongoose.Schema({
         ],
         validation: {
             validator: async function (emailAddress) {
-                const count = await this.model("Tradesperson").countDocuments;
+                const count = await this.model("Tradesperson").countDocuments({
+                    emailAddress,
+                });
                 return count === 0;
             },
             message: "Email already exists in the database",
@@ -31,7 +33,7 @@ const tradespersonSchema = new mongoose.Schema({
         ],
         validation: {
             validator: async function (phoneNumber) {
-                const count = await this.model("Tradesperson").countDocuments;
+                const count = await this.model("Tradesperson").countDocuments();
                 return count === 0;
             },
             message: "Phone number already exists in the database",

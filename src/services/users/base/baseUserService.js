@@ -6,11 +6,11 @@ class BaseUserService {
     }
 
     // Create a new user
-    async create(data) {
+    async create (data) {
         try {
             return await this.model.create(data);
-        } catch {
-            throw new Error("Error creating a new user (baseService)");
+        } catch (error) {
+            throw new Error(`Failed to create a new user. Details: ${error.message || error}`);
         }
     }
 
@@ -19,25 +19,26 @@ class BaseUserService {
         try {
             return await this.model.findById(id);
         } catch (error) {
-            throw new Error("Error getting user by id (baseService)");
+            throw new Error(`Failed to get a user by id. Details: ${error.message || error}`);
         }
     }
 
     // Update a user by id
     async updateById(id, data) {
         try {
-            return await this.model.findByIdAndUpdate(id, data);
+            console.log("data: " + data);
+            return await this.model.findByIdAndUpdate(id, data, { new: true });
         } catch (error) {
-            throw new Error("Error updating user by id (baseService)");
+            throw new Error(`Failed to update a user by id. Details: ${error.message || error}`);
         }
     }
 
     // Delete a user by id
-    async deletebyId(id) {
+    async deleteById(id) {
         try {
             return await this.model.findByIdAndDelete(id);
         } catch (error) {
-            throw new Error("Error deleting user by id (baseService)");
+            throw new Error(`Failed to delete a user by id. Details: ${error.message || error}`);
         }
     }
 
@@ -46,7 +47,7 @@ class BaseUserService {
         try {
             return await this.model.find({ county });
         } catch (error) {
-            throw new Error("Error getting user by county (baseService)");
+            throw new Error(`Failed to get a user by county. Details: ${error.message || error}`);
         }
     }
 
@@ -55,7 +56,7 @@ class BaseUserService {
         try {
             return this.model.find();
         } catch (error) {
-            throw new Error("Error getting all users (baseService)");
+            throw new Error(`Failed to get all users. Details: ${error.message || error}`);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 import BaseUserService from "../base/baseUserService.js";
 
-class HomeownerServices extends BaseUserService {
+class HomeownerService extends BaseUserService {
     
     constructor(model) {
         super(model);
@@ -18,4 +18,4 @@ class HomeownerServices extends BaseUserService {
     }
 }
 
-export default HomeownerServices;
+export default HomeownerService;

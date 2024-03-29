@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import middleware from './middleware/index.js';
 import swaggerUi from 'swagger-ui-express';
 import config from './config/index.js';
-
+import UserRoutes from './routes/user/index.js';
 
 // Load env 
 
@@ -23,17 +23,25 @@ if (process.env.NODE_ENV !== 'test') {
 // Middleware 
 
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(config.limiter);
-app.use(express.urlencoded({ extended: true }));
-app.use(middleware.errorMiddleware);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(config.swaggerDocs));
 
 // Routes
 
+const userRoutes = new UserRoutes(express.Router());
+
 app.get('/', (req, res) => {
     res.send('Welcome to the Tradeful API (Experiment)')
 })
+
+app.use('/api', userRoutes.getRoutes());
+app.use(middleware.errorMiddleware);
+// For handling 404 errors
+app.all('*', (req, res) => {
+    res.status(404).send('Page not found');
+  });
 
 // Starting the server
 
