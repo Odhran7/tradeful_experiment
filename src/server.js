@@ -6,6 +6,8 @@ import swaggerUi from 'swagger-ui-express';
 import config from './config/index.js';
 import UserRoutes from './routes/user/index.js';
 import { connectDB } from './config/database.js';
+import fs from 'fs';
+import path from 'path';
 
 // Load env 
 
@@ -40,7 +42,7 @@ app.all('*', (req, res) => {
 
 // Starting the server
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== 'test') {
     connectDB().then(() => {

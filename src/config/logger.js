@@ -2,6 +2,12 @@
 
 import winston from 'winston';
 import process from 'process';
+import { ensureDirectoryExists, getProjectRoot } from '../utils/fileSystemUtils.js';
+import path from 'path';
+
+const projectRoot = getProjectRoot();
+const logsPath = path.join(projectRoot, 'logs');
+ensureDirectoryExists(logsPath);
 
 const logger = winston.createLogger({
   level: 'info',
