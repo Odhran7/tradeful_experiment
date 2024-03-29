@@ -21,7 +21,7 @@ const swaggerOptions = {
           description: 'Development server',
         },
         {
-          url: 'https://gifted-worm-umbrella.cyclic.app/api-docs/',
+          url: 'https://gifted-worm-umbrella.cyclic.app',
           description: 'Production server',
         }
       ],
