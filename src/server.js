@@ -6,8 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import config from './config/index.js';
 import UserRoutes from './routes/user/index.js';
 import { connectDB } from './config/database.js';
-import fs from 'fs';
-import path from 'path';
+import basicAuth from 'express-basic-auth';
 
 // Load env 
 
@@ -24,6 +23,12 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(config.limiter);
+
+// Auth for api-docs
+app.use('/api-docs', basicAuth({
+    users: { 'admin': process.env.API_DOCS_PASSWORD },
+    challenge: true,
+}));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(config.swaggerDocs));
 
 // Routes
