@@ -19,11 +19,26 @@ const app = express();
 // Middleware 
 app.set('trust proxy', 1);
 
+const allowedOrigins = ['http://localhost:3000', 'https://tradeful.pro'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, 
+};
+
+app.use(cors(corsOptions));
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(config.limiter);
-
+    
 // Auth for api-docs
 app.use('/api-docs', basicAuth({
     users: { 'admin': process.env.API_DOCS_PASSWORD },
