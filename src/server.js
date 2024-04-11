@@ -19,7 +19,7 @@ const app = express();
 // Middleware 
 app.set('trust proxy', 1);
 
-const allowedOrigins = ['http://localhost:3000', 'https://tradeful.pro'];
+const allowedOrigins = ['http://localhost:3000', 'https://tradeful.pro', 'https://tradeful-experimental-client.vercel.app'];
 
 const corsOptions = {
   origin: function (origin, callback) {
