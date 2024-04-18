@@ -1,6 +1,7 @@
 // This is the service file for the homeowner type user
 
 import BaseUserService from "../base/baseUserService.js";
+import config from "../../../config/index.js";
 
 class HomeownerService extends BaseUserService {
     

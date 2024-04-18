@@ -1,6 +1,7 @@
 // This is the service file for the tradesperson type user
 
 import BaseUserService from "../base/baseUserService.js";
+import config from "../../../config/index.js";
 
 class TradespersonService extends BaseUserService {
     constructor(model) {

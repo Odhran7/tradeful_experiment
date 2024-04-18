@@ -2,7 +2,8 @@
 
 import { TradespersonController } from "../../../controllers/users/index.js";
 import { tradespersonService } from "../../../services/users/index.js";
-
+import validateObjectId
+ from "../../../middleware/validateObjectId.js";
 /**
  * @swagger
  * tags:
@@ -95,7 +96,7 @@ class TradespersonRoutes {
          *       404:
          *         description: Tradesperson not found
          */
-        this.router.get('/:id', this.tradespersonController.getTradespersonById);
+        this.router.get('/:id', validateObjectId, this.tradespersonController.getTradespersonById);
 
         /**
          * @swagger
@@ -123,7 +124,7 @@ class TradespersonRoutes {
          *       404:
          *         description: Tradesperson not found
          */
-        this.router.put('/:id', this.tradespersonController.updateTradespersonById);
+        this.router.put('/:id',validateObjectId, this.tradespersonController.updateTradespersonById);
 
         /**
          * @swagger
@@ -143,7 +144,7 @@ class TradespersonRoutes {
          *       404:
          *         description: Tradesperson not found
          */
-        this.router.delete('/:id', this.tradespersonController.deleteTradespersonById);
+        this.router.delete('/:id', validateObjectId, this.tradespersonController.deleteTradespersonById);
     }
 
     getRoutes() {

@@ -2,7 +2,7 @@
 
 import { ApprenticeController } from "../../../controllers/users/index.js";
 import { apprenticeService } from "../../../services/users/index.js";
-
+import validateObjectId from "../../../middleware/validateObjectId.js";
 /**
  * @swagger
  * tags:
@@ -99,7 +99,7 @@ class ApprenticeRoutes {
      *       404:
      *         description: Apprentice not found
      */
-    this.router.get("/:id", this.apprenticeController.getApprenticeById);
+    this.router.get("/:id", validateObjectId, this.apprenticeController.getApprenticeById);
 
     /**
      * @swagger
@@ -144,7 +144,7 @@ class ApprenticeRoutes {
      *       404:
      *         description: Apprentice not found
      */
-    this.router.put("/:id", this.apprenticeController.updateApprenticeById);
+    this.router.put("/:id", validateObjectId, this.apprenticeController.updateApprenticeById);
 
     /**
      * @swagger
@@ -165,7 +165,7 @@ class ApprenticeRoutes {
      *       404:
      *         description: Apprentice not found
      */
-    this.router.delete("/:id", this.apprenticeController.deleteApprenticeById);
+    this.router.delete("/:id", validateObjectId, this.apprenticeController.deleteApprenticeById);
   }
 
   getRoutes() {

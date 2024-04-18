@@ -1,4 +1,5 @@
 // This is the base service for the user that all the user services will inherit from 
+import config from "../../../config/index.js";
 
 class BaseUserService {
     constructor(model) {
@@ -8,6 +9,7 @@ class BaseUserService {
     // Create a new user
     async create (data) {
         try {
+            if (await this.checkDuplicates(data)) throw new Error("Item already exists");
             return await this.model.create(data);
         } catch (error) {
             throw new Error(`Failed to create a new user. Details: ${error.message || error}`);
@@ -23,10 +25,19 @@ class BaseUserService {
         }
     }
 
+    // Gets all refs
+
+    async getAll() {
+        try {
+            return this.model.find();
+        } catch (error) {
+            throw new Error(`Failed to get all. Details: ${error.message || error}`);
+        }
+    }
+
     // Update a user by id
     async updateById(id, data) {
         try {
-            console.log("data: " + data);
             return await this.model.findByIdAndUpdate(id, data, { new: true });
         } catch (error) {
             throw new Error(`Failed to update a user by id. Details: ${error.message || error}`);
@@ -42,21 +53,22 @@ class BaseUserService {
         }
     }
 
-    // Get user by county
-    async getByCounty(county) {
-        try {
-            return await this.model.find({ county });
-        } catch (error) {
-            throw new Error(`Failed to get a user by county. Details: ${error.message || error}`);
-        }
-    }
-
     // Get a list of all users
     async getAllUsers() {
         try {
             return this.model.find();
         } catch (error) {
             throw new Error(`Failed to get all users. Details: ${error.message || error}`);
+        }
+    }
+
+    // Check duplicates
+    async checkDuplicates(data) {
+        try {
+            const duplicates = await this.model.find(data);
+            return duplicates.length !== 0;
+        } catch (error) {
+            throw new Error(`Failed to check duplicates. Details: ${error.message || error}`);
         }
     }
 }

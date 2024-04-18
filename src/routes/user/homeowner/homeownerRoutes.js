@@ -2,6 +2,8 @@
 
 import { HomeownerController } from "../../../controllers/users/index.js";
 import { homeownerService } from "../../../services/users/index.js";
+import validateObjectId from "../../../middleware/validateObjectId.js";
+
 /**
  * @swagger
  * tags:
@@ -52,7 +54,7 @@ import { homeownerService } from "../../../services/users/index.js";
 class HomeownerRoutes {
     constructor(router) {
         this.router = router;
-        this.homeownerController = new HomeownerController(homeownerService );
+        this.homeownerController = new HomeownerController(homeownerService);
         this.setRoutes();
     }
 
@@ -127,7 +129,7 @@ class HomeownerRoutes {
          *       404:
          *         description: Homeowner not found
          */
-        this.router.get("/:id", this.homeownerController.getHomeownerById);
+        this.router.get("/:id", validateObjectId, this.homeownerController.getHomeownerById);
 
         /**
          * @swagger
@@ -156,7 +158,7 @@ class HomeownerRoutes {
          *       404:
          *         description: Homeowner not found
          */
-        this.router.put("/:id", this.homeownerController.updateHomeownerById);
+        this.router.put("/:id", validateObjectId, this.homeownerController.updateHomeownerById);
 
         /**
          * @swagger
@@ -177,7 +179,7 @@ class HomeownerRoutes {
          *       404:
          *         description: Homeowner not found
          */
-        this.router.delete("/:id", this.homeownerController.deleteHomeownerById);
+        this.router.delete("/:id", validateObjectId, this.homeownerController.deleteHomeownerById);
     }
 
     getRoutes() {

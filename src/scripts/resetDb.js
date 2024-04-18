@@ -4,7 +4,7 @@ import models from '../models/index.js';
 import mongoose from 'mongoose';
 import config from '../config/index.js';
 
-const { apprentice, homeowner, tradesperson } = models;
+const { apprentice, homeowner, tradesperson, job } = models;
 
 const resetDb = async () => {
     try {
@@ -13,9 +13,12 @@ const resetDb = async () => {
         useUnifiedTopology: true,
       });
       config.logger.info('Connected to database');
+      
       await apprentice.deleteMany();
       await tradesperson.deleteMany();
       await homeowner.deleteMany();
+      await job.deleteMany();
+
       config.logger.info('Database reset');
     } catch (error) {
       config.logger.error('Error resetting database: ' + error.message);
