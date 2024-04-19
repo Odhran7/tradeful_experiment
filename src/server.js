@@ -17,7 +17,7 @@ const app = express();
 // Middleware 
 app.set('trust proxy', 1);
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:5000', 'https://tradeful.pro', 'https://tradeful-experimental-client.vercel.app', 'https://tradeful.ie'];
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5000', 'https://dev-0nxzl9co.eu.auth0.com', 'https://tradeful.pro', 'https://tradeful-experimental-client.vercel.app', 'https://tradeful.ie', 'https://api.prod.tradeful.ie'];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -34,7 +34,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(config.limiter);
-    
+
 // Auth for api-docs
 app.use('/api-docs', basicAuth({
     users: { 'admin': process.env.API_DOCS_PASSWORD },
