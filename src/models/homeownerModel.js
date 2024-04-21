@@ -50,7 +50,7 @@ const homeownerSchema = new mongoose.Schema({
   eircode: {
     type: String,
     required: [true, "Eircode is required"],
-    length: [6, "Eircode must be 6 characters long"],
+    length: [7, "Eircode must be 7 characters long"],
   },
   serviceRequired: {
     type: String,

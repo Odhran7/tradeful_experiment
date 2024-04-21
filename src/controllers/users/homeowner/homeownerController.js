@@ -1,16 +1,13 @@
 // This is the controller file for the homeowner
 
+import validator from "validator";
+
 class HomeownerController {
   constructor(homeownerService) {
     this.homeownerService = homeownerService;
-    this.createHomeowner = this.createHomeowner.bind(this);
-    this.getHomeownerById = this.getHomeownerById.bind(this);
-    this.updateHomeownerById = this.updateHomeownerById.bind(this);
-    this.deleteHomeownerById = this.deleteHomeownerById.bind(this);
-    this.validateHomeownerData = this.validateHomeownerData.bind(this);
   }
 
-  async createHomeowner(req, res, next) {
+  createHomeowner = async (req, res, next) => {
     try {
       const validationErrors = this.validateHomeownerData(req.body);
       if (validationErrors.length > 0)
@@ -22,10 +19,8 @@ class HomeownerController {
     }
   }
 
-  async getHomeownerById(req, res, next) {
+  getHomeownerById = async (req, res, next) => {
     try {
-      if (isValidObjectId(req.params.id) === false)
-        return res.status(400).json({ error: "Invalid job id" });
       const homeowner = await this.homeownerService.getById(req.params.id);
       if (!homeowner)
         return res.status(404).json({ error: "Homeowner not found" });
@@ -35,10 +30,8 @@ class HomeownerController {
     }
   }
 
-  async updateHomeownerById(req, res, error) {
+  updateHomeownerById = async (req, res, next) => {
     try {
-      if (isValidObjectId(req.params.id) === false)
-        return res.status(400).json({ error: "Invalid job id" });
       const validationErrors = this.validateHomeownerData(req.body);
       if (validationErrors.length > 0)
         return res.status(400).json({ errors: validationErrors });
@@ -54,10 +47,8 @@ class HomeownerController {
     }
   }
 
-  async deleteHomeownerById(req, res, error) {
+  deleteHomeownerById = async (req, res, next) => {
     try {
-      if (isValidObjectId(req.params.id) === false)
-        return res.status(400).json({ error: "Invalid job id" });
       const homeowner = await this.homeownerService.getById(req.params.id);
       if (!homeowner)
         return res.status(404).json({ error: "Homeowner not found" });
@@ -75,21 +66,31 @@ class HomeownerController {
 
   validateHomeownerData = (data) => {
     const errors = [];
+    const checkString = (value, field, maxLength) => {
+      if (!value || typeof value !== "string")
+        errors.push(`${field} is required and must be a string`);
+      else if (maxLength && value.length > maxLength)
+        errors.push(`${field} must be less than ${maxLength} characters`);
+    };
 
-    if (!data.name || typeof data.name !== "string")
-      errors.push("Name is required and must be a string");
-    if (!data.emailAddress || typeof data.emailAddress !== "string")
-      errors.push("Email is required and must be a string");
-    if (!data.phoneNumber || typeof data.phoneNumber !== "string")
-      errors.push("Phone number is required and must be a string");
-    if (!data.address || typeof data.address !== "string")
-      errors.push("Address is required and must be a string");
-    if (!data.county || typeof data.county !== "string")
-      errors.push("County is required and must be a string");
-    if (!data.eircode || typeof data.eircode !== "string")
-      errors.push("Eircode is required and must be a string");
-    if (!data.serviceRequired || typeof data.serviceRequired !== "string")
-      errors.push("Service required is required and must be a string");
+    const checkEmail = (emailAddress) => {
+      if (
+        !emailAddress ||
+        typeof emailAddress !== "string" ||
+        !validator.isEmail(emailAddress)
+      ) {
+        errors.push("Please fill a valid email address");
+      }
+    };
+
+    checkString(data.name, "Name");
+    checkString(data.emailAddress, "Email");
+    checkString(data.phoneNumber, "Phone number", 10);
+    checkString(data.address, "Address");
+    checkString(data.county, "County");
+    checkString(data.eircode, "Eircode", 7);
+    checkString(data.serviceRequired, "Service required");
+    checkEmail(data.emailAddress);
 
     return errors;
   };

@@ -8,13 +8,6 @@ import {
 } from "../../../services/users/index.js";
 import validateObjectId from "../../../middleware/validateObjectId.js";
 
-/**
- * @swagger
- * tags:
- *   name: Job
- *   description: Job management
- */
-
 // Model def
 /**
  * @swagger

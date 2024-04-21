@@ -1,16 +1,13 @@
 // This is the controller for the tradesperson user
 
+import validator from "validator";
+
 class TradespersonController {
   constructor(tradespersonService) {
     this.tradespersonService = tradespersonService;
-    this.createTradesperson = this.createTradesperson.bind(this);
-    this.getTradespersonById = this.getTradespersonById.bind(this);
-    this.updateTradespersonById = this.updateTradespersonById.bind(this);
-    this.deleteTradespersonById = this.deleteTradespersonById.bind(this);
-    this.validateTradespersonData = this.validateTradespersonData.bind(this);
   }
 
-  async createTradesperson(req, res, next) {
+  createTradesperson = async (req, res, next) => {
     try {
       const validationErrors = this.validateTradespersonData(req.body);
       if (validationErrors.length > 0)
@@ -20,9 +17,9 @@ class TradespersonController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async getTradespersonById(req, res, next) {
+  getTradespersonById = async (req, res, next) => {
     try {
       const tradesperson = await this.tradespersonService.getById(
         req.params.id
@@ -33,9 +30,9 @@ class TradespersonController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async updateTradespersonById(req, res, next) {
+  updateTradespersonById = async (req, res, next) => {
     try {
       const validationErrors = this.validateTradespersonData(req.body);
       if (validationErrors.length > 0)
@@ -50,11 +47,13 @@ class TradespersonController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async deleteTradespersonById(req, res, next) {
+  deleteTradespersonById = async (req, res, next) => {
     try {
-      const tradesperson = await this.tradespersonService.getById(req.params.id)
+      const tradesperson = await this.tradespersonService.getById(
+        req.params.id
+      );
       if (!tradesperson)
         return res.status(404).json({ error: "Tradesperson not found" });
       const deletedTradesperson = await this.tradespersonService.deleteById(
@@ -62,32 +61,43 @@ class TradespersonController {
       );
       return res
         .status(200)
-        .json({ message: "Tradesperson deleted successfully", tradesperson: deletedTradesperson});
+        .json({
+          message: "Tradesperson deleted successfully",
+          tradesperson: deletedTradesperson,
+        });
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   validateTradespersonData = (data) => {
     const errors = [];
+    const checkString = (value, field, maxLength) => {
+      if (!value || typeof value !== "string")
+        errors.push(`${field} is required and must be a string`);
+      else if (maxLength && value.length > maxLength)
+        errors.push(`${field} must be less than ${maxLength} characters`);
+    };
 
-    if (!data.name || typeof data.name !== "string")
-      errors.push("Name is required and must be a string");
-    if (!data.emailAddress || typeof data.emailAddress !== "string")
-      errors.push("Email is required and must be a string");
-    if (!data.phoneNumber || typeof data.phoneNumber !== "string")
-      errors.push("Phone number is required and must be a string");
-    if (!data.address || typeof data.address !== "string")
-      errors.push("Address is required and must be a string");
-    if (!data.county || typeof data.county !== "string")
-      errors.push("County is required and must be a string");
-    if (!data.eircode || typeof data.eircode !== "string")
-      errors.push("Eircode is required and must be a string");
-    if (!data.trade || typeof data.trade !== "string")
-      errors.push("Trade is required and must be a string");
+    const checkEmail = (emailAddress) => {
+      if (!emailAddress || typeof emailAddress !== 'string' || !validator.isEmail(emailAddress)) {
+        errors.push("Please fill a valid email address");
+      }
+    };
+    
+
+    checkString(data.name, "Name");
+    checkString(data.emailAddress, "Email Address");
+    checkString(data.phoneNumber, "Phone Number", 10);
+    checkString(data.address, "Address");
+    checkString(data.county, "County");
+    checkString(data.eircode, "Eircode", 7);
+    checkString(data.trade, "Trade");
+
+    checkEmail(data.emailAddress);
 
     return errors;
-  }
+  };
 }
 
 export default TradespersonController;

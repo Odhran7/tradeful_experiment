@@ -52,6 +52,7 @@ const apprenticeSchema = new mongoose.Schema({
   eircode: {
     type: String,
     required: [true, "Eircode is required"],
+    length: [7, "Eircode must be 7 characters long"]
   },
   trade: {
     type: String,
