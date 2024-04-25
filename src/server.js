@@ -42,12 +42,15 @@ app.use('/api-docs', basicAuth({
 }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(config.swaggerDocs));
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the Tradeful API - We coonnect homeowners with tradespoeple')
+})
+
+// API Key for all the rest of the routes
+app.use(middleware.validateApiKey);
+
 // Routes
 const userRoutes = new UserRoutes(express.Router());
-
-app.get('/', (req, res) => {
-    res.send('Welcome to the Tradeful API (Experiment)')
-})
 
 app.use('/api', userRoutes.getRoutes());
 app.use(middleware.errorMiddleware);
